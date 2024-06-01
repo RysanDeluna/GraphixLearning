@@ -364,4 +364,4 @@ FodyWeavers.xsd
 
 *.sln
 *.vcxproj
-*.vcxproj.filters
+*.vcxproj.*

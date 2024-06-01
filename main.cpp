@@ -132,6 +132,7 @@ int main()
 	else std::cout << "FAILED TO LOAD TEXTURE 2!!" << std::endl;
 	stbi_image_free(data);
 
+	// inicialização
 	ourShader.use();
 	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
