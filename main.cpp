@@ -9,6 +9,9 @@
 
 #include "classes/Shader.h"
 
+#define WINDOW_WIDTH	800
+#define WINDOW_HEIGHT	600
+
 
 // SOME HELPER FUNCTIONS -----------------------------------------------------
 // Prototypes
@@ -37,7 +40,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
 	// Window definitions
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -53,7 +56,7 @@ int main()
 	}
 
 	// Set the viewport and rearange it if needed
-	glViewport(0, 0, 800, 600); 
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -132,13 +135,22 @@ int main()
 	else std::cout << "FAILED TO LOAD TEXTURE 2!!" << std::endl;
 	stbi_image_free(data);
 
-	// inicialização
 	ourShader.use();
 	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
 
-	float scale = 0.20;
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(-55.f), glm::vec3(1.f, 0.f, 0.f));
+	glm::mat4 view = glm::mat4(1.0f);
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.f));
+	glm::mat4 projc = glm::mat4(1.f);
+	projc = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT , 0.1f, 100.f);
+
+	ourShader.setMatrix4("model", model);
+	ourShader.setMatrix4("view", view);
+	ourShader.setMatrix4("projc", projc);
 	// The general loop
+	float scale = 0.20;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Input
