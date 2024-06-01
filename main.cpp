@@ -162,23 +162,7 @@ int main()
 		// Criação dos vértices
 		glBindVertexArray(VAO);
 
-		// Transformações
-		glm::mat4 trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(0.5, -0.5, 0.0));
-		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
 		// Desenho dos vértices
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-		// Transformações
-		glm::mat4 trans2 = glm::mat4(1.0f);
-		trans2 = glm::translate(trans2, glm::vec3(-0.5, 0.5, 0.0));
-		trans2 = glm::scale(trans2, glm::sin((float)glfwGetTime()) * glm::vec3(1,1,1));
-		unsigned int transformLoc2 = glGetUniformLocation(ourShader.ID, "transform");
-		glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(trans2));
-
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		
