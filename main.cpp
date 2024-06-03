@@ -64,10 +64,6 @@ int main()
 	// Defining some vertex data
 	float vertices[] = {
         // positions          // Cores		  // texture coords
-        // 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
-        // 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-        //-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-        //-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f  // top left 
 
 		-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 		 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
@@ -230,7 +226,10 @@ int main()
 		glm::mat4 view = glm::mat4(1.0f);
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.f));
 		glm::mat4 projc = glm::mat4(1.f);
-		projc = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT , 0.1f, 100.f);
+		// Alterando os valores de FOV diminui ou aumenta o tamanho dos objetos 
+		// e muda onde eles são posicionados, também aumentando o tamanho do frustum
+		// Enquanto alterar o aspect ratio muda a proporção dos objetos e do frustum.
+		projc = glm::perspective(glm::radians(-60.0f), (float)3/4 , 0.1f, 100.f);
 
 		ourShader.setMatrix4("view", view);
 		ourShader.setMatrix4("projc", projc);
