@@ -228,7 +228,8 @@ int main()
 		}
 
 		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.f));
+		// Alterar os valores da matriz de visualização é como mover a câmera
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.4f));
 		glm::mat4 projc = glm::mat4(1.f);
 		projc = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT , 0.1f, 100.f);
 
