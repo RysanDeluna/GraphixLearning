@@ -220,8 +220,10 @@ int main()
 		{
 			glm::mat4 model = glm::mat4(1.f);
 			model = glm::translate(model, cubePos[i]);
-			float angle = 20.0f * i;
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.f, 0.3f, 0.5f));
+			float angle = glm::radians(20.0f * i);
+			if (i % 3 == 0 || i == 0)
+				angle = (float)glfwGetTime() * glm::radians(60.f);
+			model = glm::rotate(model, angle, glm::vec3(1.f, 0.3f, 0.5f));
 			ourShader.setMatrix4("model", model);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
