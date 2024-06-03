@@ -215,22 +215,26 @@ int main()
 
 		ourShader.use();
 
-		// Rendering Commands
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::rotate(model, (float)glfwGetTime()*glm::radians(-50.f), glm::vec3(0.5f, 1.f, 0.f));
+		glBindVertexArray(VAO); 
+		for (unsigned int i = 0; i < sizeof(cubePos) / sizeof(glm::vec3); i++)
+		{
+			glm::mat4 model = glm::mat4(1.f);
+			model = glm::translate(model, cubePos[i]);
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.f, 0.3f, 0.5f));
+			ourShader.setMatrix4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
 		glm::mat4 view = glm::mat4(1.0f);
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.f));
 		glm::mat4 projc = glm::mat4(1.f);
 		projc = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT , 0.1f, 100.f);
 
-		ourShader.setMatrix4("model", model);
 		ourShader.setMatrix4("view", view);
 		ourShader.setMatrix4("projc", projc);
 
-		// Desenho dos vértices
-		glBindVertexArray(VAO); 
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
 		// Check and call events and swap the buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
