@@ -13,6 +13,13 @@
 #define WINDOW_HEIGHT	600
 
 
+// GLOBALS -------------------------------------------------------------------
+glm::vec3 camPos = glm::vec3(0.f, 0.f, 3.f);
+glm::vec3 camFrt = glm::vec3(0.f, 0.f, -1.f);
+glm::vec3 camUp = glm::vec3(0.f, 1.f, 0.f);
+const float cameraSpeed = 0.05f;
+float scale = 0.20;
+
 // SOME HELPER FUNCTIONS -----------------------------------------------------
 // Prototypes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -28,6 +35,16 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && scale <= 1.0)
+		scale += 0.05; 
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && scale >= 0.0)
+		scale -= 0.05;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) camPos += cameraSpeed * camFrt;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) camPos -= glm::normalize(glm::cross(camFrt, camUp)) * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) camPos -= cameraSpeed * camFrt;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camPos += glm::normalize(glm::cross(camFrt, camUp)) * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camPos -= camUp * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) camPos += camUp * cameraSpeed;
 }
 
 // MAIN ---------------------------------------------------------------------
@@ -192,16 +209,13 @@ int main()
 	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
 
+
 	// The general loop
-	float scale = 0.20;
+	glm::mat4 view;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Input
 		processInput(window);
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && scale <= 1.0)
-			scale += 0.05; 
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && scale >= 0.0)
-			scale -= 0.05;
 		ourShader.setFloat("scale", scale);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -227,8 +241,11 @@ int main()
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
-		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.f));
+		view = glm::lookAt(
+			camPos, 
+			camPos + camFrt,
+			camUp
+		);
 		glm::mat4 projc = glm::mat4(1.f);
 		projc = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT , 0.1f, 100.f);
 
