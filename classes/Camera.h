@@ -8,7 +8,10 @@ enum CameraMovement {
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	DOWN,
+	UP,
+	NONE
 };
 
 // DEFAUT VALUES
@@ -37,7 +40,7 @@ private:
 
 	void updateCameraVectors(); 
 public:
-	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+	Camera(glm::vec3 position = glm::vec3(0.f, 0.f, 0.f), glm::vec3 up = glm::vec3(0.f, 1.f, 0.f), float yaw = YAW, float pitch = PITCH);
 	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 	glm::mat4 getViewMatrix();
 	void processKeyboard(CameraMovement direction, float deltaTime);
